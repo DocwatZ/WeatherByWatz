@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>WeatherByWatz // GLOBAL WEATHER COMMAND CENTRE</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="crt-overlay" class="crt-overlay"></div>
+
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">📡</span>
+        <div class="logo-text">
+          <div class="logo-main">WEATHERBYWATZ</div>
+          <div class="logo-sub">GLOBAL WEATHER CMD CTR</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-center">
+      <div class="header-time">
+        <div class="time-display" id="current-time">--:--:--</div>
+        <div class="date-display" id="current-date">--- -- ----</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-controls">
+        <button class="ctrl-btn" id="crt-toggle" title="CRT Mode">CRT</button>
+        <button class="ctrl-btn" id="units-toggle" title="Toggle °C/°F">°C/°F</button>
+        <div class="location-display" id="location-display">
+          <span class="location-icon">📍</span>
+          <span id="location-name">LOCATING...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker-container">
+    <div class="ticker-label">⚠ ALERTS</div>
+    <div class="ticker-track">
+      <div class="ticker-content" id="ticker-content">
+        INITIALISING WEATHERBYWATZ GLOBAL WEATHER COMMAND CENTRE... CONNECTING TO WEATHER DATA FEEDS... STAND BY...
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <section class="panel conditions-panel">
+      <div class="panel-header">
+        <span class="panel-title">◈ CURRENT CONDITIONS</span>
+        <span class="panel-status blink" id="data-status">● LIVE</span>
+      </div>
+
+      <div class="temp-display-container">
+        <div class="weather-icon-large" id="weather-icon-large">🌡</div>
+        <div class="temp-big" id="temp-big">--.-</div>
+        <div class="temp-unit-big" id="temp-unit">°C</div>
+      </div>
+      <div class="condition-desc" id="condition-desc">ACQUIRING DATA...</div>
+
+      <div class="conditions-grid">
+        <div class="cond-item">
+          <div class="cond-label">FEELS LIKE</div>
+          <div class="cond-value seg-display" id="feels-like">--.-°</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">HUMIDITY</div>
+          <div class="cond-value seg-display" id="humidity">--%</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">WIND</div>
+          <div class="cond-value seg-display" id="wind-speed">-- MPH</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">WIND DIR</div>
+          <div class="cond-value seg-display" id="wind-dir">---</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">PRESSURE</div>
+          <div class="cond-value seg-display" id="pressure">---- hPa</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">UV INDEX</div>
+          <div class="cond-value seg-display" id="uv-index">--</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">CLOUD CVR</div>
+          <div class="cond-value seg-display" id="cloud-cover">--%</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-label">PRECIP</div>
+          <div class="cond-value seg-display" id="precip">-- mm</div>
+        </div>
+      </div>
+
+      <div class="last-updated">
+        LAST UPDATE: <span id="last-updated">--:--:--</span> UTC
+      </div>
+    </section>
+
+    <section class="panel center-panel">
+      <div class="panel-header">
+        <div class="view-tabs">
+          <button class="view-tab active" id="tab-globe" onclick="switchView('globe')">🌍 GLOBE</button>
+          <button class="view-tab" id="tab-radar" onclick="switchView('radar')">📡 RADAR</button>
+        </div>
+        <span class="panel-status blink-slow" id="globe-status">● RENDERING</span>
+      </div>
+
+      <div id="globe-container" class="map-container">
+        <div id="globe-inner"></div>
+        <div class="globe-overlay-info">
+          <div id="globe-location-info" class="globe-info-panel hidden">
+            <div id="globe-info-name">---</div>
+            <div id="globe-info-temp">--°C</div>
+            <div id="globe-info-cond">---</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="radar-container" class="map-container hidden">
+        <div id="radar-map"></div>
+        <div class="radar-controls">
+          <button class="radar-btn active" id="radar-play" onclick="toggleRadarPlay()">⏸ PAUSE</button>
+          <button class="radar-btn" onclick="changeRadarLayer('radar')">🌧 RADAR</button>
+          <button class="radar-btn" onclick="changeRadarLayer('satellite')">🛰 SAT</button>
+          <button class="radar-btn" onclick="changeRadarLayer('infrared')">🔴 IR</button>
+        </div>
+        <div class="radar-timestamp" id="radar-timestamp">--:-- UTC</div>
+      </div>
+
+      <div class="layer-controls" id="globe-layer-controls">
+        <span class="layer-label">LAYERS:</span>
+        <button class="layer-btn active" onclick="toggleGlobeLayer('clouds')">☁ CLOUDS</button>
+        <button class="layer-btn active" onclick="toggleGlobeLayer('storms')">⛈ STORMS</button>
+        <button class="layer-btn active" onclick="toggleGlobeLayer('lightning')">⚡ LIGHTNING</button>
+      </div>
+    </section>
+
+    <section class="panel forecast-panel">
+      <div class="panel-header">
+        <span class="panel-title">◈ FORECAST</span>
+        <div class="forecast-tabs">
+          <button class="forecast-tab active" onclick="showForecast('hourly')">HRLY</button>
+          <button class="forecast-tab" onclick="showForecast('daily')">10-DAY</button>
+        </div>
+      </div>
+
+      <div id="hourly-forecast" class="forecast-container">
+        <div class="forecast-list" id="hourly-list">
+          <div class="forecast-loading">ACQUIRING FORECAST DATA...</div>
+        </div>
+      </div>
+
+      <div id="daily-forecast" class="forecast-container hidden">
+        <div class="forecast-list" id="daily-list">
+          <div class="forecast-loading">ACQUIRING FORECAST DATA...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="charts-section">
+    <div class="chart-panel">
+      <div class="panel-header">
+        <span class="panel-title">◈ 24HR TEMPERATURE TREND</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="temp-chart"></canvas>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="panel-header">
+        <span class="panel-title">◈ PRECIPITATION PROBABILITY</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="precip-chart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-item">
+      <span class="footer-label">DATA:</span>
+      <span class="footer-val">OPEN-METEO / RAINVIEWER</span>
+    </div>
+    <div class="footer-item">
+      <span class="footer-label">RADAR:</span>
+      <span class="footer-val" id="footer-radar-src">RAINVIEWER</span>
+    </div>
+    <div class="footer-item">
+      <span class="footer-label">v1.0.0</span>
+    </div>
+    <div class="footer-item">
+      <span class="footer-label">WEATHERBYWATZ © 2024</span>
+    </div>
+  </footer>
+
+  <script src="/js/weather.js"></script>
+  <script src="/js/globe.js"></script>
+  <script src="/js/radar.js"></script>
+  <script src="/js/ticker.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

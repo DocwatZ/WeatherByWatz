@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  weatherbywatz:
+    image: weatherbywatz:latest
+    build: .
+    container_name: WeatherByWatz
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+      - CACHE_INTERVAL=${CACHE_INTERVAL:-600}
+      - DEFAULT_LOCATION=${DEFAULT_LOCATION:-51.5074,-0.1278}
+      - OPEN_METEO_ENDPOINT=${OPEN_METEO_ENDPOINT:-https://api.open-meteo.com/v1}
+      - RAINVIEWER_API=${RAINVIEWER_API:-https://api.rainviewer.com/public/weather-maps.json}
+      - SATELLITE_SOURCE=${SATELLITE_SOURCE:-GOES-EAST}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.weatherbywatz.rule=Host(`weather.yourdomain.com`)"
+      - "traefik.http.services.weatherbywatz.loadbalancer.server.port=3000"

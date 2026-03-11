@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>WeatherByWatz</Name>
+  <Repository>weatherbywatz/weatherbywatz:latest</Repository>
+  <Registry>https://hub.docker.com/r/weatherbywatz/weatherbywatz/</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/DocwatZ/WeatherByWatz</Support>
+  <Project>https://github.com/DocwatZ/WeatherByWatz</Project>
+  <Overview>WeatherByWatz — A retro 1990s-style global weather command centre. Features a 3D interactive globe, animated radar, real-time conditions, 10-day forecasts, severe weather alerts, and more. Mobile-first design. Powered by Open-Meteo and RainViewer APIs.</Overview>
+  <Category>Tools: Network:Other</Category>
+  <WebUI>http://[IP]:[PORT:3000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/DocwatZ/WeatherByWatz/main/unraid-template.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/DocwatZ/WeatherByWatz/main/public/icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="Web UI Port" Target="3000" Default="3000" Mode="tcp" Description="Port for the WeatherByWatz web interface." Type="Port" Display="always" Required="true" Mask="false">3000</Config>
+  <Config Name="Cache Interval" Target="CACHE_INTERVAL" Default="600" Mode="" Description="How long to cache weather data (seconds). Default: 600 (10 minutes)." Type="Variable" Display="always" Required="false" Mask="false">600</Config>
+  <Config Name="Default Location" Target="DEFAULT_LOCATION" Default="51.5074,-0.1278" Mode="" Description="Default location as lat,lon. Example: 51.5074,-0.1278 for London." Type="Variable" Display="always" Required="false" Mask="false">51.5074,-0.1278</Config>
+  <Config Name="Open-Meteo Endpoint" Target="OPEN_METEO_ENDPOINT" Default="https://api.open-meteo.com/v1" Mode="" Description="Open-Meteo API endpoint. Change only if using a self-hosted instance." Type="Variable" Display="advanced" Required="false" Mask="false">https://api.open-meteo.com/v1</Config>
+  <Config Name="RainViewer API URL" Target="RAINVIEWER_API" Default="https://api.rainviewer.com/public/weather-maps.json" Mode="" Description="RainViewer API endpoint for radar tiles." Type="Variable" Display="advanced" Required="false" Mask="false">https://api.rainviewer.com/public/weather-maps.json</Config>
+  <Config Name="Satellite Source" Target="SATELLITE_SOURCE" Default="GOES-EAST" Mode="" Description="Preferred satellite imagery source. Options: GOES-EAST, GOES-WEST, HIMAWARI, METEOSAT." Type="Variable" Display="always" Required="false" Mask="false">GOES-EAST</Config>
+  <Config Name="Ship Tracking Source" Target="SHIP_TRACKING_SOURCE" Default="" Mode="" Description="AIS ship tracking API URL (optional)." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+</Container>
