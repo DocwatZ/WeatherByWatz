@@ -110,9 +110,6 @@ const RadarModule = (() => {
     document.querySelectorAll('.radar-btn').forEach(b => {
       b.classList.remove('active');
       const onclick = b.getAttribute('onclick') || '';
-      if (onclick.includes(`'${type}'`) || (type === 'radar' && onclick.includes('radar-play'))) {
-        // skip the play button
-      }
       if (onclick.includes(`changeRadarLayer('${type}')`)) {
         b.classList.add('active');
       }
