@@ -37,6 +37,7 @@ app.use(helmet({
   hsts: false,
   contentSecurityPolicy: {
     directives: {
+      upgradeInsecureRequests: null,
       defaultSrc: ["'self'"],
       scriptSrc: [
         "'self'",
