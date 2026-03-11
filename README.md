@@ -88,6 +88,8 @@ npm run dev
 
 ## 🏠 Unraid Installation
 
+### Community Applications (Recommended)
+
 1. In Unraid, go to **Community Applications**
 2. Search for **WeatherByWatz**
 3. Click **Install**
@@ -98,6 +100,38 @@ Or manually add the template URL in the Docker tab:
 ```
 https://raw.githubusercontent.com/DocwatZ/WeatherByWatz/main/unraid-template.xml
 ```
+
+### Docker Compose Manager (Unraid 7.2.x+)
+
+Unraid 7.2.x includes support for Docker Compose stacks via the **Docker Compose Manager** plugin. To install WeatherByWatz using the Compose UI:
+
+1. Install the **Docker Compose Manager** plugin from **Community Applications** (search for "Docker Compose Manager") if not already installed
+2. Go to the **Docker** tab and click **Add New Stack**
+3. Name the stack `WeatherByWatz`
+4. Click the **gear icon** (⚙️) next to the stack and select **Edit Stack** → **Compose File**
+5. Paste the following into the compose editor:
+
+```yaml
+services:
+  weatherbywatz:
+    image: weatherbywatz/weatherbywatz:latest
+    container_name: WeatherByWatz
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - CACHE_INTERVAL=600
+      - DEFAULT_LOCATION=51.5074,-0.1278
+      - OPEN_METEO_ENDPOINT=https://api.open-meteo.com/v1
+      - RAINVIEWER_API=https://api.rainviewer.com/public/weather-maps.json
+      - SATELLITE_SOURCE=GOES-EAST
+    restart: unless-stopped
+```
+
+6. Edit `DEFAULT_LOCATION` to your preferred coordinates (lat,lon) and adjust the port or other variables as needed
+7. Click **Save Changes**, then click **Compose Up** to deploy
+
+> **Tip:** To persist data across reboots, ensure **Autostart** is enabled for the stack in the Docker Compose Manager UI.
 
 ---
 
