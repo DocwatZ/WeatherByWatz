@@ -34,6 +34,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(helmet({
+  hsts: false,
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
