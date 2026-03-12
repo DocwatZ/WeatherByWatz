@@ -3,7 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>WeatherByWatz // GLOBAL WEATHER COMMAND CENTRE</title>
+  <title>Weatherby // GLOBAL WEATHER COMMAND CENTRE</title>
+  <meta name="description" content="Weatherby — A retro-styled global weather command centre. Real-time conditions, 3D globe visualisation, radar, forecasts, storm tracking, and more.">
+  <meta name="theme-color" content="#050810">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://weatherby.watz.systems">
+  <meta property="og:title" content="Weatherby // GLOBAL WEATHER COMMAND CENTRE">
+  <meta property="og:description" content="Real-time weather conditions, interactive 3D globe, radar imagery, 10-day forecasts, storm tracking, lightning detection, and more — all in a retro command-centre interface.">
+  <meta property="og:site_name" content="Weatherby">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Weatherby // GLOBAL WEATHER COMMAND CENTRE">
+  <meta name="twitter:description" content="Real-time weather conditions, interactive 3D globe, radar imagery, 10-day forecasts, storm tracking, lightning detection, and more.">
+
+  <!-- Favicon (satellite emoji) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
+
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -19,7 +37,7 @@
       <div class="logo">
         <span class="logo-icon">📡</span>
         <div class="logo-text">
-          <div class="logo-main">WEATHERBYWATZ</div>
+          <div class="logo-main">WEATHERBY</div>
           <div class="logo-sub">GLOBAL WEATHER CMD CTR</div>
         </div>
       </div>
@@ -50,7 +68,7 @@
     <div class="ticker-label">⚠ ALERTS</div>
     <div class="ticker-track">
       <div class="ticker-content" id="ticker-content">
-        INITIALISING WEATHERBYWATZ GLOBAL WEATHER COMMAND CENTRE... CONNECTING TO WEATHER DATA FEEDS... STAND BY...
+        INITIALISING WEATHERBY GLOBAL WEATHER COMMAND CENTRE... CONNECTING TO WEATHER DATA FEEDS... STAND BY...
       </div>
     </div>
   </div>
@@ -112,8 +130,8 @@
     <section class="panel center-panel">
       <div class="panel-header">
         <div class="view-tabs">
-          <button class="view-tab active" id="tab-globe" onclick="switchView('globe')">🌍 GLOBE</button>
-          <button class="view-tab" id="tab-radar" onclick="switchView('radar')">📡 RADAR</button>
+          <button class="view-tab active" id="tab-globe" data-view="globe">🌍 GLOBE</button>
+          <button class="view-tab" id="tab-radar" data-view="radar">📡 RADAR</button>
         </div>
         <span class="panel-status blink-slow" id="globe-status">● RENDERING</span>
       </div>
@@ -145,27 +163,27 @@
       <div id="radar-container" class="map-container hidden">
         <div id="radar-map"></div>
         <div class="radar-controls">
-          <button class="radar-btn active" id="radar-play" onclick="toggleRadarPlay()">⏸ PAUSE</button>
-          <button class="radar-btn" onclick="changeRadarLayer('radar')">🌧 RADAR</button>
-          <button class="radar-btn" onclick="changeRadarLayer('satellite')">🛰 SAT</button>
-          <button class="radar-btn" onclick="changeRadarLayer('infrared')">🔴 IR</button>
+          <button class="radar-btn active" id="radar-play" data-radar-action="toggle-play">⏸ PAUSE</button>
+          <button class="radar-btn" data-radar-layer="radar">🌧 RADAR</button>
+          <button class="radar-btn" data-radar-layer="satellite">🛰 SAT</button>
+          <button class="radar-btn" data-radar-layer="infrared">🔴 IR</button>
         </div>
         <div class="radar-timestamp" id="radar-timestamp">--:-- UTC</div>
       </div>
 
       <div class="layer-controls" id="globe-layer-controls">
         <span class="layer-label">LAYERS:</span>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('clouds')">☁ CLOUDS</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('storms')">⛈ STORMS</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('lightning')">⚡ LIGHTNING</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('hurricanes')">🌀 HURRICANES</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('aurora')">🌌 AURORA</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('sunlight')">🌞 SUNLIGHT</button>
-        <button class="layer-btn" onclick="toggleGlobeLayer('flights')">✈️ FLIGHTS</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('earthquakes')">⚠️ QUAKES</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('volcanoes')">🌋 VOLCANOES</button>
-        <button class="layer-btn active" onclick="toggleGlobeLayer('oceans')">🌊 OCEANS</button>
-        <button class="layer-btn" onclick="toggleGlobeLayer('temperature')">🌡 TEMP</button>
+        <button class="layer-btn active" data-layer="clouds">☁ CLOUDS</button>
+        <button class="layer-btn active" data-layer="storms">⛈ STORMS</button>
+        <button class="layer-btn active" data-layer="lightning">⚡ LIGHTNING</button>
+        <button class="layer-btn active" data-layer="hurricanes">🌀 HURRICANES</button>
+        <button class="layer-btn active" data-layer="aurora">🌌 AURORA</button>
+        <button class="layer-btn active" data-layer="sunlight">🌞 SUNLIGHT</button>
+        <button class="layer-btn" data-layer="flights">✈️ FLIGHTS</button>
+        <button class="layer-btn active" data-layer="earthquakes">⚠️ QUAKES</button>
+        <button class="layer-btn active" data-layer="volcanoes">🌋 VOLCANOES</button>
+        <button class="layer-btn active" data-layer="oceans">🌊 OCEANS</button>
+        <button class="layer-btn" data-layer="temperature">🌡 TEMP</button>
       </div>
     </section>
 
@@ -173,8 +191,8 @@
       <div class="panel-header">
         <span class="panel-title">◈ FORECAST</span>
         <div class="forecast-tabs">
-          <button class="forecast-tab active" onclick="showForecast('hourly')">HRLY</button>
-          <button class="forecast-tab" onclick="showForecast('daily')">10-DAY</button>
+          <button class="forecast-tab active" data-forecast="hourly">HRLY</button>
+          <button class="forecast-tab" data-forecast="daily">10-DAY</button>
         </div>
       </div>
 
@@ -224,7 +242,7 @@
       <span class="footer-label">v1.0.0</span>
     </div>
     <div class="footer-item">
-      <span class="footer-label">WEATHERBYWATZ © 2024</span>
+      <span class="footer-label" id="footer-copyright">WEATHERBY © <script>document.write(new Date().getFullYear())</script></span>
     </div>
   </footer>
 

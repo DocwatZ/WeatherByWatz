@@ -57,6 +57,8 @@ const GlobeModule = (() => {
     { name: 'MEXICO CITY', lat: 19.43,  lon: -99.13  },
   ];
 
+  let selectedPin = null;
+
   let cityWeatherData = {};
 
   // --- Sample Hurricane/Cyclone Tracks ---
@@ -253,6 +255,8 @@ const GlobeModule = (() => {
           WeatherData.currentLocation = { lat: d.lat, lon: d.lon, name: d.name };
           if (typeof App !== 'undefined') App.loadWeather(d.lat, d.lon, d.name);
           globe.pointOfView({ lat: d.lat, lng: d.lon, altitude: 2 }, 1000);
+          selectedPin = { lat: d.lat, lon: d.lon };
+          globe.htmlElementsData([selectedPin]);
         })
         .labelsData(MAJOR_CITIES)
         .labelLat('lat')
@@ -261,7 +265,18 @@ const GlobeModule = (() => {
         .labelSize(0.5)
         .labelColor(() => '#ffb300')
         .labelDotRadius(0.2)
-        .labelResolution(2);
+        .labelResolution(2)
+        .htmlElementsData([])
+        .htmlLat('lat')
+        .htmlLng('lon')
+        .htmlAltitude(0.02)
+        .htmlElement(d => {
+          const el = document.createElement('div');
+          el.className = 'globe-pin-marker';
+          el.innerHTML = '📍';
+          el.style.cssText = 'font-size:28px;filter:drop-shadow(0 0 6px rgba(255,179,0,0.8));pointer-events:none;transform:translate(-50%,-100%);';
+          return el;
+        });
 
       globe.controls().autoRotate = true;
       globe.controls().autoRotateSpeed = 0.3;
@@ -369,6 +384,8 @@ const GlobeModule = (() => {
   function focusOn(lat, lon) {
     if (globe) {
       globe.pointOfView({ lat, lng: lon, altitude: 2 }, 1000);
+      selectedPin = { lat: lat, lon: lon };
+      globe.htmlElementsData([selectedPin]);
     }
   }
 
@@ -996,8 +1013,7 @@ const GlobeModule = (() => {
     layers[layer] = (enabled !== undefined) ? enabled : !layers[layer];
     const buttons = document.querySelectorAll('.layer-btn');
     buttons.forEach(btn => {
-      const match = btn.getAttribute('onclick') && btn.getAttribute('onclick').match(/'(\w+)'/);
-      if (match && match[1] === layer) {
+      if (btn.dataset.layer === layer) {
         btn.classList.toggle('active', layers[layer]);
       }
     });
