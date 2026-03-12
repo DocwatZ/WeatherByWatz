@@ -350,6 +350,7 @@ const App = (() => {
     RadarModule.init('radar-map');
     TickerModule.init('ticker-content');
     initCharts();
+    initSearch();
 
     if (forecastData) updateCharts(forecastData);
 
@@ -358,6 +359,92 @@ const App = (() => {
       const loc = WeatherData.currentLocation;
       await loadWeather(loc.lat, loc.lon, loc.name);
     }, 10 * 60 * 1000);
+  }
+
+  // ── Location Search ──────────────────────────────────────────────────
+  let searchDebounce = null;
+
+  function initSearch() {
+    const input = document.getElementById('search-input');
+    const resultsEl = document.getElementById('search-results');
+    if (!input || !resultsEl) return;
+
+    input.addEventListener('input', () => {
+      const query = input.value.trim();
+      if (searchDebounce) clearTimeout(searchDebounce);
+      if (query.length < 2) {
+        resultsEl.classList.add('hidden');
+        resultsEl.innerHTML = '';
+        return;
+      }
+      searchDebounce = setTimeout(() => searchLocation(query), 350);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        resultsEl.classList.add('hidden');
+        input.blur();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#search-wrapper')) {
+        resultsEl.classList.add('hidden');
+      }
+    });
+  }
+
+  async function searchLocation(query) {
+    const resultsEl = document.getElementById('search-results');
+    if (!resultsEl) return;
+
+    try {
+      const encoded = encodeURIComponent(query);
+      const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encoded}&count=5&language=en`
+      );
+      if (!res.ok) return;
+
+      const data = await res.json();
+      if (!data.results || data.results.length === 0) {
+        resultsEl.innerHTML = '<div class="search-result-item"><span class="result-detail">NO RESULTS FOUND</span></div>';
+        resultsEl.classList.remove('hidden');
+        return;
+      }
+
+      resultsEl.innerHTML = '';
+      data.results.forEach(loc => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        const country = loc.country || '';
+        const admin = loc.admin1 || '';
+        const detail = [admin, country].filter(Boolean).join(', ');
+        item.innerHTML = `<div class="result-name">📍 ${loc.name}</div><div class="result-detail">${detail} (${loc.latitude.toFixed(2)}, ${loc.longitude.toFixed(2)})</div>`;
+
+        item.addEventListener('click', () => {
+          selectSearchResult(loc);
+          resultsEl.classList.add('hidden');
+        });
+
+        resultsEl.appendChild(item);
+      });
+      resultsEl.classList.remove('hidden');
+    } catch (e) {
+      console.warn('Search failed:', e);
+    }
+  }
+
+  function selectSearchResult(loc) {
+    const input = document.getElementById('search-input');
+    if (input) input.value = loc.name;
+
+    WeatherData.currentLocation = { lat: loc.latitude, lon: loc.longitude, name: loc.name };
+
+    if (GlobeModule.initialized) {
+      GlobeModule.focusOn(loc.latitude, loc.longitude);
+    }
+
+    loadWeather(loc.latitude, loc.longitude, loc.name);
   }
 
   // Global function exports for inline onclick handlers

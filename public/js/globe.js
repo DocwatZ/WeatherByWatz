@@ -266,6 +266,33 @@ const GlobeModule = (() => {
       globe.controls().autoRotate = true;
       globe.controls().autoRotateSpeed = 0.3;
 
+      // --- Globe Interaction: pause rotation on hover/click ---
+      let rotationResumeTimer = null;
+
+      function pauseRotation() {
+        if (!globe) return;
+        globe.controls().autoRotate = false;
+        if (rotationResumeTimer) {
+          clearTimeout(rotationResumeTimer);
+          rotationResumeTimer = null;
+        }
+      }
+
+      function scheduleResumeRotation() {
+        if (rotationResumeTimer) clearTimeout(rotationResumeTimer);
+        rotationResumeTimer = setTimeout(() => {
+          if (globe) globe.controls().autoRotate = true;
+          rotationResumeTimer = null;
+        }, 5000);
+      }
+
+      el.addEventListener('mouseenter', pauseRotation);
+      el.addEventListener('mousedown', pauseRotation);
+      el.addEventListener('mouseleave', scheduleResumeRotation);
+      el.addEventListener('mouseup', scheduleResumeRotation);
+      el.addEventListener('touchstart', pauseRotation, { passive: true });
+      el.addEventListener('touchend', scheduleResumeRotation, { passive: true });
+
       initialized = true;
 
       const statusEl = document.getElementById('globe-status');
@@ -1109,6 +1136,7 @@ const GlobeModule = (() => {
 
   return {
     init, focusOn, updateCityWeather, addStormMarkers, toggleLayer,
-    get initialized() { return initialized; }
+    get initialized() { return initialized; },
+    getGlobe() { return globe; }
   };
 })();
