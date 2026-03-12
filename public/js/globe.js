@@ -140,19 +140,19 @@ const GlobeModule = (() => {
 
   // --- Ocean Current Paths ---
   const SAMPLE_OCEAN_CURRENTS = [
-    { startLat: 25.0, startLng: -80.0, endLat: 35.0, endLng: -75.0 },
-    { startLat: 35.0, startLng: -75.0, endLat: 45.0, endLng: -50.0 },
-    { startLat: 45.0, startLng: -50.0, endLat: 55.0, endLng: -20.0 },
-    { startLat: 20.0, startLng: 125.0, endLat: 30.0, endLng: 135.0 },
-    { startLat: 30.0, startLng: 135.0, endLat: 38.0, endLng: 145.0 },
-    { startLat: 38.0, startLng: 145.0, endLat: 42.0, endLng: 160.0 },
-    { startLat: -55.0, startLng: -60.0, endLat: -58.0, endLng: 0.0 },
-    { startLat: -58.0, startLng: 0.0, endLat: -55.0, endLng: 60.0 },
-    { startLat: -55.0, startLng: 60.0, endLat: -58.0, endLng: 120.0 },
-    { startLat: -58.0, startLng: 120.0, endLat: -55.0, endLng: 180.0 },
-    { startLat: -25.0, startLng: 35.0, endLat: -35.0, endLng: 28.0 },
-    { startLat: -35.0, startLng: 18.0, endLat: -20.0, endLng: 12.0 },
-    { startLat: 55.0, startLng: -20.0, endLat: 65.0, endLng: 5.0 }
+    { startLat: 25.0, startLng: -80.0, endLat: 35.0, endLng: -75.0, name: 'Gulf Stream', ocean: 'Atlantic Ocean' },
+    { startLat: 35.0, startLng: -75.0, endLat: 45.0, endLng: -50.0, name: 'Gulf Stream', ocean: 'Atlantic Ocean' },
+    { startLat: 45.0, startLng: -50.0, endLat: 55.0, endLng: -20.0, name: 'North Atlantic Drift', ocean: 'Atlantic Ocean' },
+    { startLat: 20.0, startLng: 125.0, endLat: 30.0, endLng: 135.0, name: 'Kuroshio Current', ocean: 'Pacific Ocean' },
+    { startLat: 30.0, startLng: 135.0, endLat: 38.0, endLng: 145.0, name: 'Kuroshio Current', ocean: 'Pacific Ocean' },
+    { startLat: 38.0, startLng: 145.0, endLat: 42.0, endLng: 160.0, name: 'North Pacific Current', ocean: 'Pacific Ocean' },
+    { startLat: -55.0, startLng: -60.0, endLat: -58.0, endLng: 0.0, name: 'Antarctic Circumpolar', ocean: 'Southern Ocean' },
+    { startLat: -58.0, startLng: 0.0, endLat: -55.0, endLng: 60.0, name: 'Antarctic Circumpolar', ocean: 'Southern Ocean' },
+    { startLat: -55.0, startLng: 60.0, endLat: -58.0, endLng: 120.0, name: 'Antarctic Circumpolar', ocean: 'Indian Ocean' },
+    { startLat: -58.0, startLng: 120.0, endLat: -55.0, endLng: 180.0, name: 'Antarctic Circumpolar', ocean: 'Pacific Ocean' },
+    { startLat: -25.0, startLng: 35.0, endLat: -35.0, endLng: 28.0, name: 'Agulhas Current', ocean: 'Indian Ocean' },
+    { startLat: -35.0, startLng: 18.0, endLat: -20.0, endLng: 12.0, name: 'Benguela Current', ocean: 'Atlantic Ocean' },
+    { startLat: 55.0, startLng: -20.0, endLat: 65.0, endLng: 5.0, name: 'Norwegian Current', ocean: 'Arctic Ocean' }
   ];
 
   // --- Sample Earthquake Data (fallback when USGS not reachable) ---
@@ -165,6 +165,16 @@ const GlobeModule = (() => {
     { lat: 38.72, lon: 20.72, mag: 2.9, place: 'Greece' },
     { lat: 36.23, lon: 44.01, mag: 3.0, place: 'Iraq-Iran Border' },
     { lat: -22.91, lon: -43.17, mag: 2.2, place: 'Rio de Janeiro Region' }
+  ];
+
+  // --- Sample Storm Locations (fallback when no real severe weather detected) ---
+  const SAMPLE_STORMS = [
+    { lat: 25.0, lon: -71.0, name: 'BERMUDA TRIANGLE ZONE', code: 95 },
+    { lat: 14.6, lon: -17.4, name: 'CAPE VERDE STORM ZONE', code: 95 },
+    { lat: 22.3, lon: 114.2, name: 'SOUTH CHINA SEA', code: 96 },
+    { lat: -15.4, lon: 47.3, name: 'MOZAMBIQUE CHANNEL', code: 95 },
+    { lat: 12.0, lon: 80.0, name: 'BAY OF BENGAL', code: 99 },
+    { lat: -8.0, lon: 155.0, name: 'CORAL SEA', code: 95 }
   ];
 
   // --- Helper: Temperature to Color ---
@@ -467,8 +477,9 @@ const GlobeModule = (() => {
             + '</div>';
         }
         if (d.type === 'ocean') {
+          var oceanInfo = (d.name || 'Current') + (d.ocean ? ' — ' + d.ocean : '');
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #00bfff;padding:6px 10px;color:#00bfff;font-size:13px;">'
-            + '\uD83C\uDF0A Ocean Current'
+            + '\uD83C\uDF0A ' + oceanInfo
             + '</div>';
         }
         return '';
@@ -520,7 +531,7 @@ const GlobeModule = (() => {
           const mag = (d.mag || 0).toFixed(1);
           const severity = d.mag >= 6 ? 'MAJOR' : d.mag >= 4 ? 'MODERATE' : d.mag >= 2 ? 'MINOR' : 'MICRO';
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff7800;padding:6px 10px;color:#ff7800;font-size:14px;">'
-            + '\u26A0\uFE0F <b>M' + mag + '</b> — ' + severity
+            + '\u26A0\uFE0F <b>M' + mag + ' RICHTER</b> — ' + severity
             + '<br><span style="color:#ffb300;font-size:12px;">' + (d.place || 'Unknown location') + '</span>'
             + '</div>';
         }
@@ -617,7 +628,14 @@ const GlobeModule = (() => {
     try {
       const scene = globe.scene();
       const THREE = window.THREE;
-      if (!scene || !THREE) return;
+      if (!scene || !THREE) {
+        console.warn('Cloud layer: THREE or scene unavailable');
+        return;
+      }
+
+      // Remove old cloud mesh if re-initialising
+      const existing = scene.getObjectByName('cloudLayer');
+      if (existing) scene.remove(existing);
 
       const loader = new THREE.TextureLoader();
       loader.crossOrigin = 'anonymous';
@@ -625,14 +643,16 @@ const GlobeModule = (() => {
         'https://unpkg.com/three-globe/example/img/earth-clouds.png',
         function (texture) {
           const geometry = new THREE.SphereGeometry(101, 64, 64);
-          const material = new THREE.MeshPhongMaterial({
+          const material = new THREE.MeshBasicMaterial({
             map: texture,
             transparent: true,
             opacity: 0.35,
-            depthWrite: false
+            depthWrite: false,
+            side: THREE.DoubleSide
           });
           cloudMesh = new THREE.Mesh(geometry, material);
           cloudMesh.name = 'cloudLayer';
+          cloudMesh.renderOrder = 1;
           scene.add(cloudMesh);
 
           (function animateClouds() {
@@ -823,7 +843,14 @@ const GlobeModule = (() => {
     try {
       var scene = globe.scene();
       var THREE = window.THREE;
-      if (!scene || !THREE) return;
+      if (!scene || !THREE) {
+        console.warn('Sunlight layer: THREE or scene unavailable');
+        return;
+      }
+
+      // Remove old sunlight mesh if re-initialising
+      var existing = scene.getObjectByName('sunlightOverlay');
+      if (existing) scene.remove(existing);
 
       var vertexShader = [
         'varying vec3 vWorldNormal;',
@@ -857,6 +884,7 @@ const GlobeModule = (() => {
       var geometry = new THREE.SphereGeometry(100.5, 64, 64);
       sunlightMesh = new THREE.Mesh(geometry, material);
       sunlightMesh.name = 'sunlightOverlay';
+      sunlightMesh.renderOrder = 2;
       scene.add(sunlightMesh);
 
       updateSunPosition();
@@ -1020,7 +1048,9 @@ const GlobeModule = (() => {
       endLng: c.endLng,
       color: '#00bfff',
       stroke: 0.6,
-      type: 'ocean'
+      type: 'ocean',
+      name: c.name || '',
+      ocean: c.ocean || ''
     }));
 
     updateArcsDisplay(getBaseArcs());
@@ -1030,6 +1060,11 @@ const GlobeModule = (() => {
   // START ALL WEATHER EFFECTS
   // =============================================
   function startWeatherEffects() {
+    // Use sample storms as fallback when no real severe weather detected
+    if (stormCities.length === 0) {
+      stormCities = SAMPLE_STORMS.slice();
+    }
+
     // Existing effects
     updateRingsDisplay();
     startLightningCycle();
@@ -1066,6 +1101,7 @@ const GlobeModule = (() => {
     // --- Storms ---
     if (layer === 'storms') {
       if (layers.storms) {
+        if (stormCities.length === 0) stormCities = SAMPLE_STORMS.slice();
         updateRingsDisplay();
         updateWindParticles();
         loadRadarOverlay();
@@ -1087,14 +1123,19 @@ const GlobeModule = (() => {
         clearInterval(lightningTimer);
         lightningTimer = null;
         updateArcsDisplay(getBaseArcs());
-      } else if (layers.lightning && stormCities.length > 0) {
+      } else if (layers.lightning) {
+        if (stormCities.length === 0) stormCities = SAMPLE_STORMS.slice();
         startLightningCycle();
       }
     }
 
     // --- Clouds ---
-    if (layer === 'clouds' && cloudMesh) {
-      cloudMesh.visible = layers.clouds;
+    if (layer === 'clouds') {
+      if (cloudMesh) {
+        cloudMesh.visible = layers.clouds;
+      } else if (layers.clouds) {
+        initCloudLayer();
+      }
     }
 
     // --- Hurricanes ---

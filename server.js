@@ -54,7 +54,7 @@ app.use(helmet({
         'https://fonts.gstatic.com',
       ],
       imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
-      connectSrc: ["'self'", 'https://api.open-meteo.com', 'https://geocoding-api.open-meteo.com', 'https://api.rainviewer.com', 'https://api.met.no', 'https://tilecache.rainviewer.com'],
+      connectSrc: ["'self'", 'https://api.open-meteo.com', 'https://geocoding-api.open-meteo.com', 'https://api.rainviewer.com', 'https://api.met.no', 'https://tilecache.rainviewer.com', 'https://earthquake.usgs.gov'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       workerSrc: ["'self'", 'blob:'],
       frameSrc: ["'none'"],
