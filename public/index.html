@@ -32,6 +32,10 @@
     </div>
     <div class="header-right">
       <div class="header-controls">
+        <div class="search-wrapper" id="search-wrapper">
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 SEARCH LOCATION..." autocomplete="off">
+          <div id="search-results" class="search-results hidden"></div>
+        </div>
         <button class="ctrl-btn" id="crt-toggle" title="CRT Mode">CRT</button>
         <button class="ctrl-btn" id="units-toggle" title="Toggle °C/°F">°C/°F</button>
         <div class="location-display" id="location-display">
@@ -122,6 +126,19 @@
             <div id="globe-info-temp">--°C</div>
             <div id="globe-info-cond">---</div>
           </div>
+        </div>
+        <div id="weather-legend" class="weather-legend">
+          <div class="legend-header">◈ WEATHER LAYERS</div>
+          <ul class="legend-list">
+            <li>⚡ <span>Lightning</span> <span class="legend-desc">— thunderstorm locations</span></li>
+            <li>🔴 <span>Storm Rings</span> <span class="legend-desc">— severe storms / heavy rain</span></li>
+            <li>🌪 <span>Hurricane Track</span> <span class="legend-desc">— tropical cyclone paths</span></li>
+            <li>🌬 <span>Wind Arcs</span> <span class="legend-desc">— strong wind flows</span></li>
+            <li>🌧 <span>Radar Overlay</span> <span class="legend-desc">— precipitation zones</span></li>
+            <li>☁️ <span>Cloud Layer</span> <span class="legend-desc">— global cloud cover</span></li>
+            <li>🌌 <span>Aurora</span> <span class="legend-desc">— polar aurora zones</span></li>
+            <li>🌋 <span>Earthquakes</span> <span class="legend-desc">— recent seismic activity</span></li>
+          </ul>
         </div>
       </div>
 
