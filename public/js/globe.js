@@ -272,7 +272,10 @@ const GlobeModule = (() => {
       function pauseRotation() {
         if (!globe) return;
         globe.controls().autoRotate = false;
-        if (rotationResumeTimer) { clearTimeout(rotationResumeTimer); rotationResumeTimer = null; }
+        if (rotationResumeTimer) {
+          clearTimeout(rotationResumeTimer);
+          rotationResumeTimer = null;
+        }
       }
 
       function scheduleResumeRotation() {

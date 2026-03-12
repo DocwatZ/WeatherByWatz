@@ -1083,7 +1083,7 @@ body.crt-mode {
 
 .legend-header {
   font-family: var(--font-retro);
-  font-size: 0.4rem;
+  font-size: 0.45rem;
   color: var(--color-cyan);
   letter-spacing: 0.08em;
   margin-bottom: 6px;
