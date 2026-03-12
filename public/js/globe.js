@@ -1,4 +1,4 @@
-// WeatherByWatz - 3D Globe Module
+// Weatherby - 3D Globe Module
 const GlobeModule = (() => {
   let globe;
   let initialized = false;
@@ -65,6 +65,7 @@ const GlobeModule = (() => {
   const SAMPLE_HURRICANES = [
     {
       name: 'HURRICANE MARIA',
+      category: 5,
       track: [
         { lat: 14.5, lon: -45.2 },
         { lat: 16.1, lon: -48.0 },
@@ -75,6 +76,7 @@ const GlobeModule = (() => {
     },
     {
       name: 'TYPHOON HAIYAN',
+      category: 5,
       track: [
         { lat: 6.0, lon: 155.0 },
         { lat: 8.5, lon: 148.0 },
@@ -85,6 +87,7 @@ const GlobeModule = (() => {
     },
     {
       name: 'CYCLONE IDAI',
+      category: 3,
       track: [
         { lat: -12.0, lon: 47.0 },
         { lat: -14.5, lon: 43.0 },
@@ -94,6 +97,7 @@ const GlobeModule = (() => {
     },
     {
       name: 'HURRICANE DORIAN',
+      category: 5,
       track: [
         { lat: 15.0, lon: -55.0 },
         { lat: 18.0, lon: -60.0 },
@@ -106,18 +110,18 @@ const GlobeModule = (() => {
 
   // --- Sample Volcano Locations ---
   const SAMPLE_VOLCANOES = [
-    { name: 'Etna', lat: 37.751, lon: 14.993 },
-    { name: 'Vesuvius', lat: 40.821, lon: 14.426 },
-    { name: 'Kilauea', lat: 19.421, lon: -155.287 },
-    { name: 'Mount Fuji', lat: 35.361, lon: 138.727 },
-    { name: 'Eyjafjallajokull', lat: 63.633, lon: -19.621 },
-    { name: 'Pinatubo', lat: 15.143, lon: 120.350 },
-    { name: 'Krakatoa', lat: -6.102, lon: 105.423 },
-    { name: 'Mount St. Helens', lat: 46.191, lon: -122.196 },
-    { name: 'Popocatepetl', lat: 19.023, lon: -98.628 },
-    { name: 'Sakurajima', lat: 31.581, lon: 130.657 },
-    { name: 'Stromboli', lat: 38.789, lon: 15.213 },
-    { name: 'Merapi', lat: -7.541, lon: 110.446 }
+    { name: 'Etna', lat: 37.751, lon: 14.993, vei: 3 },
+    { name: 'Vesuvius', lat: 40.821, lon: 14.426, vei: 5 },
+    { name: 'Kilauea', lat: 19.421, lon: -155.287, vei: 1 },
+    { name: 'Mount Fuji', lat: 35.361, lon: 138.727, vei: 5 },
+    { name: 'Eyjafjallajokull', lat: 63.633, lon: -19.621, vei: 4 },
+    { name: 'Pinatubo', lat: 15.143, lon: 120.350, vei: 6 },
+    { name: 'Krakatoa', lat: -6.102, lon: 105.423, vei: 6 },
+    { name: 'Mount St. Helens', lat: 46.191, lon: -122.196, vei: 5 },
+    { name: 'Popocatepetl', lat: 19.023, lon: -98.628, vei: 3 },
+    { name: 'Sakurajima', lat: 31.581, lon: 130.657, vei: 3 },
+    { name: 'Stromboli', lat: 38.789, lon: 15.213, vei: 2 },
+    { name: 'Merapi', lat: -7.541, lon: 110.446, vei: 4 }
   ];
 
   // --- Sample Flight Routes ---
@@ -238,15 +242,24 @@ const GlobeModule = (() => {
         })
         .pointLabel(d => {
           if (d.type === 'volcano') {
-            return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff4500;padding:6px 10px;color:#ff4500;font-size:14px;">\uD83C\uDF0B ' + d.name + '</div>';
+            var veiLabel = d.vei !== undefined ? ' VEI-' + d.vei : '';
+            return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff4500;padding:6px 10px;color:#ff4500;font-size:14px;">\uD83C\uDF0B ' + d.name + veiLabel + '</div>';
+          }
+          if (d.type === 'temperature') {
+            var tC = d.temp;
+            var displayTemp = WeatherData.useFahrenheit ? WeatherData.toF(tC).toFixed(1) + '\u00B0F' : tC.toFixed(1) + '\u00B0C';
+            return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid ' + tempToColor(tC) + ';padding:6px 10px;color:' + tempToColor(tC) + ';font-size:14px;">'
+              + '\uD83C\uDF21 ' + displayTemp
+              + '</div>';
           }
           if (d.type && d.type !== 'city') return '';
           const weather = cityWeatherData[d.name];
-          const temp = weather ? weather.temp.toFixed(1) + '\u00B0C' : 'CLICK FOR WEATHER';
+          var unit = WeatherData.useFahrenheit ? '\u00B0F' : '\u00B0C';
+          var tempVal = weather ? (WeatherData.useFahrenheit ? WeatherData.toF(weather.temp).toFixed(1) : weather.temp.toFixed(1)) + unit : 'CLICK FOR WEATHER';
           const cond = weather ? weather.desc : '';
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #00e5ff;padding:8px 12px;color:#00e5ff;font-size:16px;min-width:120px;">'
             + '<div style="color:#ffb300;font-size:14px;margin-bottom:4px;">\uD83D\uDCCD ' + d.name + '</div>'
-            + '<div style="color:#00e5ff;">' + temp + '</div>'
+            + '<div style="color:#00e5ff;">' + tempVal + '</div>'
             + (cond ? '<div style="color:#00ff41;font-size:13px;">' + cond + '</div>' : '')
             + '</div>';
         })
@@ -445,6 +458,20 @@ const GlobeModule = (() => {
         if (d.type === 'flight') return 0.2;
         if (d.type === 'ocean') return 0.15;
         return 0.15;
+      })
+      .arcLabel(d => {
+        if (d.type === 'hurricane') {
+          var catLabel = d.category ? 'CAT ' + d.category : '';
+          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff0055;padding:6px 10px;color:#ff0055;font-size:14px;">'
+            + '\uD83C\uDF00 ' + (d.name || 'CYCLONE') + (catLabel ? ' — ' + catLabel : '')
+            + '</div>';
+        }
+        if (d.type === 'ocean') {
+          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #00bfff;padding:6px 10px;color:#00bfff;font-size:13px;">'
+            + '\uD83C\uDF0A Ocean Current'
+            + '</div>';
+        }
+        return '';
       });
   }
 
@@ -487,7 +514,24 @@ const GlobeModule = (() => {
         if (d.type === 'earthquake') return 1.2;
         return 1;
       })
-      .ringRepeatPeriod(800);
+      .ringRepeatPeriod(800)
+      .ringLabel(d => {
+        if (d.type === 'earthquake') {
+          var mag = (d.mag || 0).toFixed(1);
+          var severity = d.mag >= 6 ? 'MAJOR' : d.mag >= 4 ? 'MODERATE' : d.mag >= 2 ? 'MINOR' : 'MICRO';
+          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff7800;padding:6px 10px;color:#ff7800;font-size:14px;">'
+            + '\u26A0\uFE0F <b>M' + mag + '</b> — ' + severity
+            + '<br><span style="color:#ffb300;font-size:12px;">' + (d.place || 'Unknown location') + '</span>'
+            + '</div>';
+        }
+        if (d.type === 'storm') {
+          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff0044;padding:6px 10px;color:#ff0044;font-size:14px;">'
+            + '\u26C8 SEVERE WEATHER'
+            + '<br><span style="color:#ffb300;font-size:12px;">' + (d.name || 'Storm zone') + '</span>'
+            + '</div>';
+        }
+        return '';
+      });
   }
 
   // =============================================
@@ -668,7 +712,8 @@ const GlobeModule = (() => {
           color: '#ff0055',
           stroke: 1.5,
           type: 'hurricane',
-          name: storm.name
+          name: storm.name,
+          category: storm.category
         });
       }
     });
@@ -955,6 +1000,7 @@ const GlobeModule = (() => {
       lat: v.lat,
       lon: v.lon,
       name: v.name,
+      vei: v.vei,
       type: 'volcano'
     }));
 

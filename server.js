@@ -165,7 +165,7 @@ app.get('/api/alerts', async (req, res) => {
     const url = `https://api.met.no/weatherapi/metalerts/2.0/all.json`;
     const { data } = await axios.get(url, {
       params: { lat, lon },
-      headers: { 'User-Agent': 'WeatherByWatz/1.0 github.com/DocwatZ/WeatherByWatz' },
+      headers: { 'User-Agent': 'Weatherby/1.0 github.com/DocwatZ/WeatherByWatz' },
       timeout: 8000,
     });
     const features = data.features || [];
@@ -209,7 +209,7 @@ app.use((err, req, res, _next) => {
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`WeatherByWatz running on http://localhost:${PORT}`);
+  console.log(`Weatherby running on http://localhost:${PORT}`);
   console.log(`Cache TTL: ${CACHE_TTL}s | Default location: ${DEFAULT_LOCATION}`);
 });
 

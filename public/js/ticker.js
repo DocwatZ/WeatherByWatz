@@ -1,4 +1,4 @@
-// WeatherByWatz - Ticker Module
+// Weatherby - Ticker Module
 const TickerModule = (() => {
   const DEFAULT_MESSAGES = [
     '⚠ WEATHERBY GLOBAL WEATHER COMMAND CENTRE ONLINE',

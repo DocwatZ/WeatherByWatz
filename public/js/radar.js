@@ -1,4 +1,4 @@
-// WeatherByWatz - Radar Module
+// Weatherby - Radar Module
 const RadarModule = (() => {
   let map;
   let radarLayer;
@@ -107,13 +107,12 @@ const RadarModule = (() => {
 
   function changeLayer(type) {
     currentLayerType = type;
-    document.querySelectorAll('.radar-btn').forEach(b => {
-      b.classList.remove('active');
-      const onclick = b.getAttribute('onclick') || '';
-      if (onclick.includes(`changeRadarLayer('${type}')`)) {
-        b.classList.add('active');
-      }
+    document.querySelectorAll('.radar-btn[data-radar-layer]').forEach(b => {
+      b.classList.toggle('active', b.dataset.radarLayer === type);
     });
+    // Keep play button active state separate
+    const playBtn = document.getElementById('radar-play');
+    if (playBtn) playBtn.classList.add('active');
     updateFrame(currentFrame);
   }
 

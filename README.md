@@ -1,11 +1,11 @@
 ```
- ██╗    ██╗███████╗ █████╗ ████████╗██╗  ██╗███████╗██████╗ ██████╗ ██╗   ██╗██╗    ██╗ █████╗ ████████╗███████╗
- ██║    ██║██╔════╝██╔══██╗╚══██╔══╝██║  ██║██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝██║    ██║██╔══██╗╚══██╔══╝╚══███╔╝
- ██║ █╗ ██║█████╗  ███████║   ██║   ███████║█████╗  ██████╔╝██████╔╝ ╚████╔╝ ██║ █╗ ██║███████║   ██║     ███╔╝
- ██║███╗██║██╔══╝  ██╔══██║   ██║   ██╔══██║██╔══╝  ██╔══██╗██╔══██╗  ╚██╔╝  ██║███╗██║██╔══██║   ██║    ███╔╝
- ╚███╔███╔╝███████╗██║  ██║   ██║   ██║  ██║███████╗██║  ██║██████╔╝   ██║   ╚███╔███╔╝██║  ██║   ██║   ███████╗
-  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
-                              📡  G L O B A L   W E A T H E R   C O M M A N D   C E N T R E  📡
+ ██╗    ██╗███████╗ █████╗ ████████╗██╗  ██╗███████╗██████╗ ██████╗ ██╗   ██╗
+ ██║    ██║██╔════╝██╔══██╗╚══██╔══╝██║  ██║██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝
+ ██║ █╗ ██║█████╗  ███████║   ██║   ███████║█████╗  ██████╔╝██████╔╝ ╚████╔╝
+ ██║███╗██║██╔══╝  ██╔══██║   ██║   ██╔══██║██╔══╝  ██╔══██╗██╔══██╗  ╚██╔╝
+ ╚███╔███╔╝███████╗██║  ██║   ██║   ██║  ██║███████╗██║  ██║██████╔╝   ██║
+  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝
+                       📡  G L O B A L   W E A T H E R   C O M M A N D   C E N T R E  📡
 ```
 
 <div align="center">
@@ -59,11 +59,11 @@ Then open **http://localhost:3000** in your browser.
 
 ```bash
 docker run -d \
-  --name WeatherByWatz \
+  --name Weatherby \
   -p 3000:3000 \
   -e DEFAULT_LOCATION="51.5074,-0.1278" \
   --restart unless-stopped \
-  weatherbywatz/weatherbywatz:latest
+  weatherby/weatherby:latest
 ```
 
 ### Node.js (Local Development)
@@ -91,7 +91,7 @@ npm run dev
 ### Community Applications (Recommended)
 
 1. In Unraid, go to **Community Applications**
-2. Search for **WeatherByWatz**
+2. Search for **Weatherby**
 3. Click **Install**
 4. Configure your default location (lat,lon) and port
 5. Click **Apply**
@@ -103,19 +103,19 @@ https://raw.githubusercontent.com/DocwatZ/WeatherByWatz/main/unraid-template.xml
 
 ### Docker Compose Manager (Unraid 7.2.x+)
 
-Unraid 7.2.x includes support for Docker Compose stacks via the **Docker Compose Manager** plugin. To install WeatherByWatz using the Compose UI:
+Unraid 7.2.x includes support for Docker Compose stacks via the **Docker Compose Manager** plugin. To install Weatherby using the Compose UI:
 
 1. Install the **Docker Compose Manager** plugin from **Community Applications** (search for "Docker Compose Manager") if not already installed
 2. Go to the **Docker** tab and click **Add New Stack**
-3. Name the stack `WeatherByWatz`
+3. Name the stack `Weatherby`
 4. Click the **gear icon** (⚙️) next to the stack and select **Edit Stack** → **Compose File**
 5. Paste the following into the compose editor:
 
 ```yaml
 services:
-  weatherbywatz:
-    image: weatherbywatz/weatherbywatz:latest
-    container_name: WeatherByWatz
+  weatherby:
+    image: weatherby/weatherby:latest
+    container_name: Weatherby
     ports:
       - "3000:3000"
     environment:
@@ -158,7 +158,7 @@ cp .env.example .env
 ## 🏗 Architecture
 
 ```
-WeatherByWatz/
+Weatherby/
 ├── server.js                 # Express server — API proxy, caching, security
 ├── package.json              # Dependencies
 ├── Dockerfile                # Production Docker image (node:20-alpine)
@@ -219,7 +219,7 @@ All `/api/` endpoints validate `lat` (−90 to 90) and `lon` (−180 to 180) inp
 
 ## 🔌 Third-Party Services
 
-WeatherByWatz requires **zero API keys** — all services are free and open:
+Weatherby requires **zero API keys** — all services are free and open:
 
 | Service | Usage | Rate Limits |
 |---------|-------|-------------|
@@ -278,7 +278,7 @@ all copies or substantial portions of the Software.
 
 **Built with 💚 by DocwatZ**
 
-*WeatherByWatz — Where 1990s aesthetics meet modern weather data*
+*Weatherby — Where 1990s aesthetics meet modern weather data*
 
 📡 `GLOBAL WEATHER COMMAND CENTRE` 📡
 

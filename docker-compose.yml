@@ -1,9 +1,9 @@
 version: '3.8'
 services:
-  weatherbywatz:
-    image: weatherbywatz:latest
+  weatherby:
+    image: weatherby:latest
     build: .
-    container_name: WeatherByWatz
+    container_name: Weatherby
     ports:
       - "${PORT:-3000}:3000"
     environment:
@@ -16,5 +16,5 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.weatherbywatz.rule=Host(`weather.yourdomain.com`)"
-      - "traefik.http.services.weatherbywatz.loadbalancer.server.port=3000"
+      - "traefik.http.routers.weatherby.rule=Host(`weather.yourdomain.com`)"
+      - "traefik.http.services.weatherby.loadbalancer.server.port=3000"
