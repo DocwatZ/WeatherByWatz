@@ -7,6 +7,8 @@ const GlobeModule = (() => {
   // Weather effect state
   const THUNDER_CODES = [95, 96, 99];
   const SEVERE_CODES = [65, 82, 95, 96, 99];
+  const MAX_WIND_ARCS = 50;
+  const RADAR_REFRESH_MS = 120000;
   let stormCities = [];
   let windData = {};
   let windArcs = [];
@@ -282,7 +284,7 @@ const GlobeModule = (() => {
       });
     });
 
-    return arcs.slice(0, 50); // Limit for performance
+    return arcs.slice(0, MAX_WIND_ARCS); // Limit for performance
   }
 
   function updateWindParticles() {
@@ -341,29 +343,29 @@ const GlobeModule = (() => {
       .then(function (data) {
         if (!data || !data.radar || !data.radar.past || data.radar.past.length === 0) return;
 
-        var latest = data.radar.past[data.radar.past.length - 1];
-        var radarUrl = 'https://tilecache.rainviewer.com' + latest.path + '/256/0/0/0/2/1_1.png';
+        const latest = data.radar.past[data.radar.past.length - 1];
+        const radarUrl = 'https://tilecache.rainviewer.com' + latest.path + '/256/0/0/0/2/1_1.png';
 
         try {
-          var scene = globe.scene();
-          var THREE = window.THREE;
+          const scene = globe.scene();
+          const THREE = window.THREE;
           if (!scene || !THREE) return;
 
-          var loader = new THREE.TextureLoader();
+          const loader = new THREE.TextureLoader();
           loader.crossOrigin = 'anonymous';
           loader.load(radarUrl, function (texture) {
-            var existing = scene.getObjectByName('radarOverlay');
+            const existing = scene.getObjectByName('radarOverlay');
             if (existing) scene.remove(existing);
 
-            var geometry = new THREE.SphereGeometry(100.8, 64, 64);
-            var material = new THREE.MeshBasicMaterial({
+            const geometry = new THREE.SphereGeometry(100.8, 64, 64);
+            const material = new THREE.MeshBasicMaterial({
               map: texture,
               transparent: true,
               opacity: 0.35,
               depthWrite: false,
               side: THREE.FrontSide
             });
-            var mesh = new THREE.Mesh(geometry, material);
+            const mesh = new THREE.Mesh(geometry, material);
             mesh.name = 'radarOverlay';
             scene.add(mesh);
           });
@@ -383,7 +385,7 @@ const GlobeModule = (() => {
 
     loadRadarOverlay();
     if (radarTimer) clearInterval(radarTimer);
-    radarTimer = setInterval(loadRadarOverlay, 120000);
+    radarTimer = setInterval(loadRadarOverlay, RADAR_REFRESH_MS);
   }
 
   function toggleLayer(layer, enabled) {
@@ -407,8 +409,8 @@ const GlobeModule = (() => {
         windArcs = [];
         updateArcsDisplay([]);
         try {
-          var scene = globe.scene();
-          var existing = scene && scene.getObjectByName('radarOverlay');
+          const scene = globe.scene();
+          const existing = scene && scene.getObjectByName('radarOverlay');
           if (existing) scene.remove(existing);
         } catch (e) {}
       }
