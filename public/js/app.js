@@ -1,4 +1,4 @@
-// WeatherByWatz - Main Application
+// Weatherby - Main Application
 const App = (() => {
   let tempChart = null;
   let precipChart = null;
@@ -341,6 +341,21 @@ const App = (() => {
     if (crtBtn) crtBtn.addEventListener('click', toggleCRT);
     const unitsBtn = document.getElementById('units-toggle');
     if (unitsBtn) unitsBtn.addEventListener('click', toggleUnits);
+
+    // Location pin button — centres globe on current/default location
+    const locBtn = document.getElementById('location-btn');
+    if (locBtn) locBtn.addEventListener('click', () => {
+      const loc = WeatherData.currentLocation;
+      if (GlobeModule.initialized) {
+        GlobeModule.focusOn(loc.lat, loc.lon);
+      }
+      if (currentView === 'radar' && RadarModule.initialized) {
+        RadarModule.centreOn(loc.lat, loc.lon);
+      }
+      if (currentView !== 'globe') {
+        switchView('globe');
+      }
+    });
 
     // View tabs (GLOBE / RADAR)
     document.querySelectorAll('[data-view]').forEach(btn => {

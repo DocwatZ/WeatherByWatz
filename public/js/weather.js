@@ -1,4 +1,4 @@
-// WeatherByWatz - Weather Data Module
+// Weatherby - Weather Data Module
 const WeatherData = (() => {
   let config = {};
   let currentLocation = { lat: 51.5074, lon: -0.1278, name: 'LONDON, UK' };

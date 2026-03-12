@@ -1,5 +1,5 @@
 {
-  "name": "weatherbywatz",
+  "name": "weatherby",
   "version": "1.0.0",
   "description": "A retro global weather command centre",
   "main": "server.js",

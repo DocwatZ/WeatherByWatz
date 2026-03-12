@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <Container version="2">
-  <Name>WeatherByWatz</Name>
-  <Repository>weatherbywatz/weatherbywatz:latest</Repository>
-  <Registry>https://hub.docker.com/r/weatherbywatz/weatherbywatz/</Registry>
+  <Name>Weatherby</Name>
+  <Repository>weatherby/weatherby:latest</Repository>
+  <Registry>https://hub.docker.com/r/weatherby/weatherby/</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>bash</Shell>
   <Privileged>false</Privileged>
   <Support>https://github.com/DocwatZ/WeatherByWatz</Support>
   <Project>https://github.com/DocwatZ/WeatherByWatz</Project>
-  <Overview>WeatherByWatz — A retro 1990s-style global weather command centre. Features a 3D interactive globe, animated radar, real-time conditions, 10-day forecasts, severe weather alerts, and more. Mobile-first design. Powered by Open-Meteo and RainViewer APIs.</Overview>
+  <Overview>Weatherby — A retro 1990s-style global weather command centre. Features a 3D interactive globe, animated radar, real-time conditions, 10-day forecasts, severe weather alerts, and more. Mobile-first design. Powered by Open-Meteo and RainViewer APIs.</Overview>
   <Category>Tools: Network:Other</Category>
   <WebUI>http://[IP]:[PORT:3000]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/DocwatZ/WeatherByWatz/main/unraid-template.xml</TemplateURL>
@@ -21,7 +21,7 @@
   <DonateText/>
   <DonateLink/>
   <Requires/>
-  <Config Name="Web UI Port" Target="3000" Default="3000" Mode="tcp" Description="Port for the WeatherByWatz web interface." Type="Port" Display="always" Required="true" Mask="false">3000</Config>
+  <Config Name="Web UI Port" Target="3000" Default="3000" Mode="tcp" Description="Port for the Weatherby web interface." Type="Port" Display="always" Required="true" Mask="false">3000</Config>
   <Config Name="Cache Interval" Target="CACHE_INTERVAL" Default="600" Mode="" Description="How long to cache weather data (seconds). Default: 600 (10 minutes)." Type="Variable" Display="always" Required="false" Mask="false">600</Config>
   <Config Name="Default Location" Target="DEFAULT_LOCATION" Default="51.5074,-0.1278" Mode="" Description="Default location as lat,lon. Example: 51.5074,-0.1278 for London." Type="Variable" Display="always" Required="false" Mask="false">51.5074,-0.1278</Config>
   <Config Name="Open-Meteo Endpoint" Target="OPEN_METEO_ENDPOINT" Default="https://api.open-meteo.com/v1" Mode="" Description="Open-Meteo API endpoint. Change only if using a self-hosted instance." Type="Variable" Display="advanced" Required="false" Mask="false">https://api.open-meteo.com/v1</Config>

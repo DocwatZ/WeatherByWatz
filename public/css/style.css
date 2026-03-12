@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   WeatherByWatz — Retro Global Weather Command Centre
+   Weatherby — Retro Global Weather Command Centre
    style.css
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -227,7 +227,7 @@ body.crt-mode {
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
 }
 
-.location-display {
+.location-btn {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -237,6 +237,19 @@ body.crt-mode {
   letter-spacing: 0.05em;
   max-width: 160px;
   overflow: hidden;
+  background: transparent;
+  border: 1px solid var(--color-amber);
+  border-radius: 2px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: rgba(255, 179, 0, 0.2);
+  touch-action: manipulation;
+}
+
+.location-btn:hover {
+  background: rgba(255, 179, 0, 0.15);
+  box-shadow: 0 0 6px rgba(255, 179, 0, 0.3);
 }
 
 .location-icon {
@@ -970,7 +983,13 @@ body.crt-mode {
     font-size: 0.4rem;
   }
 
-  .location-display {
+  .location-btn {
+    max-width: 40px;
+    padding: 5px 6px;
+    border-color: var(--color-amber);
+  }
+
+  .location-btn #location-name {
     display: none;
   }
 
