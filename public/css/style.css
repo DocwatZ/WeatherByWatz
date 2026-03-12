@@ -849,6 +849,13 @@ body.crt-mode {
   cursor: none;
 }
 
+.globe-pin-marker {
+  font-size: 28px;
+  filter: drop-shadow(0 0 6px rgba(255, 179, 0, 0.8));
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+
 #globe-inner canvas {
   display: block;
 }

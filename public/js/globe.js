@@ -273,8 +273,7 @@ const GlobeModule = (() => {
         .htmlElement(d => {
           const el = document.createElement('div');
           el.className = 'globe-pin-marker';
-          el.innerHTML = '📍';
-          el.style.cssText = 'font-size:28px;filter:drop-shadow(0 0 6px rgba(255,179,0,0.8));pointer-events:none;transform:translate(-50%,-100%);';
+          el.textContent = '📍';
           return el;
         });
 

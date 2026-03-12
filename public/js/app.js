@@ -334,6 +334,9 @@ const App = (() => {
     updateClock();
     setInterval(updateClock, 1000);
 
+    const yearEl = document.getElementById('footer-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     const crtBtn = document.getElementById('crt-toggle');
     if (crtBtn) crtBtn.addEventListener('click', toggleCRT);
     const unitsBtn = document.getElementById('units-toggle');
