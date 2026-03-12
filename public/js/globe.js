@@ -169,7 +169,7 @@ const GlobeModule = (() => {
 
   // --- Sample Storm Locations (fallback when no real severe weather detected) ---
   const SAMPLE_STORMS = [
-    { lat: 25.0, lon: -71.0, name: 'BERMUDA TRIANGLE ZONE', code: 95 },
+    { lat: 25.0, lon: -71.0, name: 'WESTERN ATLANTIC ZONE', code: 95 },
     { lat: 14.6, lon: -17.4, name: 'CAPE VERDE STORM ZONE', code: 95 },
     { lat: 22.3, lon: 114.2, name: 'SOUTH CHINA SEA', code: 96 },
     { lat: -15.4, lon: 47.3, name: 'MOZAMBIQUE CHANNEL', code: 95 },
@@ -183,6 +183,11 @@ const GlobeModule = (() => {
     if (t < 10) return '#22c55e';
     if (t < 20) return '#eab308';
     return '#ef4444';
+  }
+
+  // --- Helper: Ensure storm data exists (uses sample fallback) ---
+  function ensureStormData() {
+    if (stormCities.length === 0) stormCities = SAMPLE_STORMS.slice();
   }
 
   // --- Helper: Sun Position ---
@@ -1061,9 +1066,7 @@ const GlobeModule = (() => {
   // =============================================
   function startWeatherEffects() {
     // Use sample storms as fallback when no real severe weather detected
-    if (stormCities.length === 0) {
-      stormCities = SAMPLE_STORMS.slice();
-    }
+    ensureStormData();
 
     // Existing effects
     updateRingsDisplay();
@@ -1101,7 +1104,7 @@ const GlobeModule = (() => {
     // --- Storms ---
     if (layer === 'storms') {
       if (layers.storms) {
-        if (stormCities.length === 0) stormCities = SAMPLE_STORMS.slice();
+        ensureStormData();
         updateRingsDisplay();
         updateWindParticles();
         loadRadarOverlay();
@@ -1124,7 +1127,7 @@ const GlobeModule = (() => {
         lightningTimer = null;
         updateArcsDisplay(getBaseArcs());
       } else if (layers.lightning) {
-        if (stormCities.length === 0) stormCities = SAMPLE_STORMS.slice();
+        ensureStormData();
         startLightningCycle();
       }
     }
