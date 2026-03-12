@@ -334,10 +334,35 @@ const App = (() => {
     updateClock();
     setInterval(updateClock, 1000);
 
+    const yearEl = document.getElementById('footer-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     const crtBtn = document.getElementById('crt-toggle');
     if (crtBtn) crtBtn.addEventListener('click', toggleCRT);
     const unitsBtn = document.getElementById('units-toggle');
     if (unitsBtn) unitsBtn.addEventListener('click', toggleUnits);
+
+    // View tabs (GLOBE / RADAR)
+    document.querySelectorAll('[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.view));
+    });
+
+    // Forecast tabs (HRLY / 10-DAY)
+    document.querySelectorAll('[data-forecast]').forEach(btn => {
+      btn.addEventListener('click', () => showForecast(btn.dataset.forecast));
+    });
+
+    // Layer toggle buttons (CLOUDS, STORMS, etc.)
+    document.querySelectorAll('[data-layer]').forEach(btn => {
+      btn.addEventListener('click', () => GlobeModule.toggleLayer(btn.dataset.layer));
+    });
+
+    // Radar control buttons
+    document.querySelectorAll('[data-radar-layer]').forEach(btn => {
+      btn.addEventListener('click', () => RadarModule.changeLayer(btn.dataset.radarLayer));
+    });
+    const radarPlayBtn = document.querySelector('[data-radar-action="toggle-play"]');
+    if (radarPlayBtn) radarPlayBtn.addEventListener('click', () => RadarModule.togglePlay());
 
     await WeatherData.fetchConfig();
     const location = await WeatherData.getLocation();

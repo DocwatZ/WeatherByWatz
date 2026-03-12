@@ -484,6 +484,8 @@ body.crt-mode {
   border-radius: 2px;
   transition: all 0.2s;
   letter-spacing: 0.03em;
+  -webkit-tap-highlight-color: rgba(0, 229, 255, 0.2);
+  touch-action: manipulation;
 }
 
 .view-tab:hover {
@@ -542,6 +544,8 @@ body.crt-mode {
   border-radius: 2px;
   transition: all 0.2s;
   white-space: nowrap;
+  -webkit-tap-highlight-color: rgba(0, 229, 255, 0.2);
+  touch-action: manipulation;
 }
 
 .radar-btn:hover {
@@ -598,6 +602,8 @@ body.crt-mode {
   border-radius: 2px;
   transition: all 0.2s;
   letter-spacing: 0.03em;
+  -webkit-tap-highlight-color: rgba(0, 229, 255, 0.2);
+  touch-action: manipulation;
 }
 
 .layer-btn:hover {
@@ -632,6 +638,8 @@ body.crt-mode {
   cursor: pointer;
   border-radius: 2px;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: rgba(0, 229, 255, 0.2);
+  touch-action: manipulation;
 }
 
 .forecast-tab:hover {
@@ -837,6 +845,17 @@ body.crt-mode {
   overflow: hidden;
 }
 
+#globe-inner {
+  cursor: none;
+}
+
+.globe-pin-marker {
+  font-size: 28px;
+  filter: drop-shadow(0 0 6px rgba(255, 179, 0, 0.8));
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+
 #globe-inner canvas {
   display: block;
 }
@@ -897,11 +916,24 @@ body.crt-mode {
     flex-wrap: wrap;
     padding: 6px 10px;
     gap: 4px;
+    overflow: visible;
   }
 
   .header-left { order: 1; flex: 0 0 auto; }
   .header-right { order: 2; flex: 0 0 auto; }
   .header-center { order: 3; flex: 1 1 100%; text-align: center; }
+
+  .search-wrapper {
+    position: static;
+  }
+
+  .search-results {
+    position: fixed;
+    top: auto;
+    left: 8px;
+    right: 8px;
+    z-index: 9000;
+  }
 
   .ticker-container {
     top: auto;
@@ -955,6 +987,11 @@ body.crt-mode {
     font-size: 0.8rem;
     max-width: 200px;
     padding: 6px 8px;
+  }
+
+  .search-result-item {
+    padding: 12px 10px;
+    font-size: 1rem;
   }
 
   .footer {
