@@ -217,7 +217,7 @@ const GlobeModule = (() => {
         .pointLat('lat')
         .pointLng('lon')
         .pointColor(d => {
-          if (d.type === 'aurora') return ['#00ff88','#a855f7','#00e5ff'][Math.floor(Math.random()*3)];
+          if (d.type === 'aurora') return ['#00ff88','#a855f7','#00e5ff'][d.colorIdx || 0];
           if (d.type === 'volcano') return '#ff4500';
           if (d.type === 'temperature') return tempToColor(d.temp);
           return '#00e5ff';
@@ -812,7 +812,7 @@ const GlobeModule = (() => {
           startLng: w.lon - 0.5,
           endLat: w.lat + 0.5,
           endLng: w.lon + 0.5,
-          color: ['#ff6600', '#ff0000'],
+          color: '#ff6600',
           stroke: 1.0,
           type: 'flight'
         });
