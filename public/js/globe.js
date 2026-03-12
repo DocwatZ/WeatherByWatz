@@ -242,20 +242,20 @@ const GlobeModule = (() => {
         })
         .pointLabel(d => {
           if (d.type === 'volcano') {
-            var veiLabel = d.vei !== undefined ? ' VEI-' + d.vei : '';
+            const veiLabel = d.vei !== undefined ? ' VEI-' + d.vei : '';
             return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff4500;padding:6px 10px;color:#ff4500;font-size:14px;">\uD83C\uDF0B ' + d.name + veiLabel + '</div>';
           }
           if (d.type === 'temperature') {
-            var tC = d.temp;
-            var displayTemp = WeatherData.useFahrenheit ? WeatherData.toF(tC).toFixed(1) + '\u00B0F' : tC.toFixed(1) + '\u00B0C';
+            const tC = d.temp;
+            const displayTemp = WeatherData.useFahrenheit ? WeatherData.toF(tC).toFixed(1) + '\u00B0F' : tC.toFixed(1) + '\u00B0C';
             return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid ' + tempToColor(tC) + ';padding:6px 10px;color:' + tempToColor(tC) + ';font-size:14px;">'
               + '\uD83C\uDF21 ' + displayTemp
               + '</div>';
           }
           if (d.type && d.type !== 'city') return '';
           const weather = cityWeatherData[d.name];
-          var unit = WeatherData.useFahrenheit ? '\u00B0F' : '\u00B0C';
-          var tempVal = weather ? (WeatherData.useFahrenheit ? WeatherData.toF(weather.temp).toFixed(1) : weather.temp.toFixed(1)) + unit : 'CLICK FOR WEATHER';
+          const unit = WeatherData.useFahrenheit ? '\u00B0F' : '\u00B0C';
+          const tempVal = weather ? (WeatherData.useFahrenheit ? WeatherData.toF(weather.temp).toFixed(1) : weather.temp.toFixed(1)) + unit : 'CLICK FOR WEATHER';
           const cond = weather ? weather.desc : '';
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #00e5ff;padding:8px 12px;color:#00e5ff;font-size:16px;min-width:120px;">'
             + '<div style="color:#ffb300;font-size:14px;margin-bottom:4px;">\uD83D\uDCCD ' + d.name + '</div>'
@@ -461,7 +461,7 @@ const GlobeModule = (() => {
       })
       .arcLabel(d => {
         if (d.type === 'hurricane') {
-          var catLabel = d.category ? 'CAT ' + d.category : '';
+          const catLabel = d.category ? 'CAT ' + d.category : '';
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff0055;padding:6px 10px;color:#ff0055;font-size:14px;">'
             + '\uD83C\uDF00 ' + (d.name || 'CYCLONE') + (catLabel ? ' — ' + catLabel : '')
             + '</div>';
@@ -517,8 +517,8 @@ const GlobeModule = (() => {
       .ringRepeatPeriod(800)
       .ringLabel(d => {
         if (d.type === 'earthquake') {
-          var mag = (d.mag || 0).toFixed(1);
-          var severity = d.mag >= 6 ? 'MAJOR' : d.mag >= 4 ? 'MODERATE' : d.mag >= 2 ? 'MINOR' : 'MICRO';
+          const mag = (d.mag || 0).toFixed(1);
+          const severity = d.mag >= 6 ? 'MAJOR' : d.mag >= 4 ? 'MODERATE' : d.mag >= 2 ? 'MINOR' : 'MICRO';
           return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff7800;padding:6px 10px;color:#ff7800;font-size:14px;">'
             + '\u26A0\uFE0F <b>M' + mag + '</b> — ' + severity
             + '<br><span style="color:#ffb300;font-size:12px;">' + (d.place || 'Unknown location') + '</span>'
