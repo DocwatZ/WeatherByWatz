@@ -264,7 +264,8 @@ const App = (() => {
 
   function toggleCRT() {
     crtMode = !crtMode;
-    document.body.classList.toggle('crt-mode', crtMode);
+    const wrapper = document.getElementById('app-wrapper');
+    if (wrapper) wrapper.classList.toggle('crt-mode', crtMode);
     const btn = document.getElementById('crt-toggle');
     if (btn) btn.classList.toggle('active', crtMode);
   }

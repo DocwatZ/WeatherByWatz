@@ -530,24 +530,7 @@ const GlobeModule = (() => {
         if (d.type === 'earthquake') return 1.2;
         return 1;
       })
-      .ringRepeatPeriod(800)
-      .ringLabel(d => {
-        if (d.type === 'earthquake') {
-          const mag = (d.mag || 0).toFixed(1);
-          const severity = d.mag >= 6 ? 'MAJOR' : d.mag >= 4 ? 'MODERATE' : d.mag >= 2 ? 'MINOR' : 'MICRO';
-          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff7800;padding:6px 10px;color:#ff7800;font-size:14px;">'
-            + '\u26A0\uFE0F <b>M' + mag + ' RICHTER</b> — ' + severity
-            + '<br><span style="color:#ffb300;font-size:12px;">' + (d.place || 'Unknown location') + '</span>'
-            + '</div>';
-        }
-        if (d.type === 'storm') {
-          return '<div style="font-family:\'VT323\',monospace;background:rgba(5,8,16,0.92);border:1px solid #ff0044;padding:6px 10px;color:#ff0044;font-size:14px;">'
-            + '\u26C8 SEVERE WEATHER'
-            + '<br><span style="color:#ffb300;font-size:12px;">' + (d.name || 'Storm zone') + '</span>'
-            + '</div>';
-        }
-        return '';
-      });
+      .ringRepeatPeriod(800);
   }
 
   // =============================================
@@ -1237,6 +1220,10 @@ const GlobeModule = (() => {
         updatePointsDisplay();
       }
     }
+
+    updatePointsDisplay();
+    updateArcsDisplay(getBaseArcs());
+    updateRingsDisplay();
   }
 
   return {
