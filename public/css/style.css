@@ -65,7 +65,7 @@ body {
   inset: 0;
   z-index: 9999;
 }
-body.crt-mode .crt-overlay {
+#app-wrapper.crt-mode .crt-overlay {
   display: block;
   background: repeating-linear-gradient(
     0deg,
